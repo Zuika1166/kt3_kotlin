@@ -11,6 +11,7 @@ import io.ktor.server.application.install
 import io.ktor.server.plugins.ContentTransformationException
 import io.ktor.server.plugins.statuspages.StatusPages
 import io.ktor.server.response.respond
+import io.ktor.serialization.ContentConvertException
 
 fun Application.configureStatusPages() {
     install(StatusPages) {
@@ -43,6 +44,13 @@ fun Application.configureStatusPages() {
         }
 
         exception<ContentTransformationException> { call, _ ->
+            call.respond(
+                HttpStatusCode.BadRequest,
+                ErrorResponse("Invalid request body")
+            )
+        }
+
+        exception<ContentConvertException> { call, _ ->
             call.respond(
                 HttpStatusCode.BadRequest,
                 ErrorResponse("Invalid request body")
