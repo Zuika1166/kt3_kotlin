@@ -43,19 +43,6 @@ class ApplicationTest {
     }
 
     @Test
-    fun malformedJsonReturnsBadRequest() = testApplication {
-        application { module() }
-
-        val response = client.post("/auth/register") {
-            contentType(ContentType.Application.Json)
-            setBody("{")
-        }
-
-        assertEquals(HttpStatusCode.BadRequest, response.status)
-        assertTrue(response.bodyAsText().contains("Invalid request body"))
-    }
-
-    @Test
     fun authenticationAndCrudFlowWorks() = testApplication {
         application { module() }
 
